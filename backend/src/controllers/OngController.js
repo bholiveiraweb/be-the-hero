@@ -6,7 +6,7 @@ module.exports = {
         const ongs = await connection('ongs').select('*');
         return response.json(ongs);
     },
-    
+
     async create(request, response) {
         const { name, email, whatsapp, city, uf } = request.body;
         const id = crypto.randomBytes(4).toString('HEX');
@@ -16,5 +16,22 @@ module.exports = {
         });
 
         return response.json({ id });
+    },
+
+    async delete(request, response) {
+        const { id } = request.body;
+
+        const ong = await connection('ongs')
+            .where('id', id)
+            .select('id')
+            .first();
+
+        if (!ong.id) {
+            return response.status(404).send();
+        }
+
+        await connection('ongs').where('id', id).delete();
+
+        return response.status(204).send();
     }
 }
