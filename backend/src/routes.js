@@ -10,7 +10,7 @@ const SessionController = require('./controllers/SessionController');
 routes.post('/sessions', celebrate({
     
     [Segments.BODY]: Joi.object().keys({
-        id: Joi.string().required
+        id: Joi.string().required()
     })
 
 }), SessionController.create);
